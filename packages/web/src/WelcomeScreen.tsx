@@ -77,12 +77,13 @@ export default function WelcomeScreen({ onStart }: Props) {
         </div>
 
         <div style={{
-          fontSize: "clamp(0.9rem, 2vw, 1.2rem)",
+          fontSize: "clamp(0.75rem, 3.5vw, 1.1rem)",
           color: "#00e5ff",
-          letterSpacing: "0.4em",
+          letterSpacing: "0.3em",
           marginTop: 8,
           textShadow: "0 0 12px rgba(0,229,255,0.8)",
           textTransform: "uppercase",
+          whiteSpace: "nowrap",
         }}>
           ⛓ &nbsp; never break the chain &nbsp; ⛓
         </div>
