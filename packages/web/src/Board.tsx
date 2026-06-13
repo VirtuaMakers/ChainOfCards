@@ -5,9 +5,10 @@ interface Props {
   board: BoardType;
   onCellClick: (index: number) => void;
   currentTurn: Player;
+  highlightCells?: number[];
 }
 
-export default function Board({ board, onCellClick, currentTurn }: Props) {
+export default function Board({ board, onCellClick, currentTurn, highlightCells = [] }: Props) {
   return (
     <div style={{
       display: "grid",
@@ -15,9 +16,10 @@ export default function Board({ board, onCellClick, currentTurn }: Props) {
       gridTemplateRows: "repeat(3, 130px)",
       gap: 6,
       padding: 12,
-      background: "#1a1a2e",
-      borderRadius: 8,
-      border: "2px solid #444",
+      background: "rgba(180,0,255,0.06)",
+      borderRadius: 4,
+      border: "1px solid rgba(180,0,255,0.3)",
+      boxShadow: "0 0 30px rgba(180,0,255,0.15)",
     }}>
       {board.map((cell, i) => (
         <div
@@ -26,8 +28,8 @@ export default function Board({ board, onCellClick, currentTurn }: Props) {
           style={{
             width: 110,
             height: 130,
-            background: cell ? "transparent" : "#2a2a4a",
-            border: cell ? "none" : "2px dashed #555",
+            background: highlightCells.includes(i) ? "rgba(255,215,0,0.15)" : cell ? "transparent" : "rgba(255,255,255,0.03)",
+            border: highlightCells.includes(i) ? "2px solid #ffd700" : cell ? "none" : "2px dashed #444",
             borderRadius: 6,
             display: "flex",
             alignItems: "center",
