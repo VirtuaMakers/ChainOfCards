@@ -1,0 +1,16 @@
+{
+  "name": "@chain-of-cards/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
+    "deploy:polygon": "hardhat run scripts/deploy.ts --network polygon"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.7",
+    "typescript": "^5.5.3"
+  }
+}

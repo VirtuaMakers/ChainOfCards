@@ -1,0 +1,15 @@
+{
+  "name": "chain-of-cards",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=packages/web & npm run dev --workspace=packages/server",
+    "build": "npm run build --workspace=packages/web && npm run build --workspace=packages/server"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
