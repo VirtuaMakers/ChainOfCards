@@ -16,23 +16,27 @@ interface Props {
 
 type DirLayout = { top?: string | number; bottom?: string | number; left?: string | number; right?: string | number; transform?: string };
 
-const DIR_POSITIONS: Record<Direction, DirLayout> = {
-  N:  { top: 6,  left: "50%", transform: "translateX(-50%)" },
-  S:  { bottom: 6, left: "50%", transform: "translateX(-50%)" },
-  W:  { left: 6, top: "50%", transform: "translateY(-50%)" },
-  E:  { right: 6, top: "50%", transform: "translateY(-50%)" },
-  NW: { top: 6,  left: 6 },
-  NE: { top: 6,  right: 6 },
-  SW: { bottom: 6, left: 6 },
-  SE: { bottom: 6, right: 6 },
-};
+function dirPositions(p: number): Record<Direction, DirLayout> {
+  return {
+    N:  { top: p,    left: "50%", transform: "translateX(-50%)" },
+    S:  { bottom: p, left: "50%", transform: "translateX(-50%)" },
+    W:  { left: p,   top: "50%",  transform: "translateY(-50%)" },
+    E:  { right: p,  top: "50%",  transform: "translateY(-50%)" },
+    NW: { top: p,    left: p },
+    NE: { top: p,    right: p },
+    SW: { bottom: p, left: p },
+    SE: { bottom: p, right: p },
+  };
+}
 
 export default function CardTile({ card, owner, selected, onClick, small }: Props) {
   const color = owner === "P1" ? P1_COLOR : P2_COLOR;
-  const w = small ? 72 : 100;
-  const h = small ? 90 : 126;
+  // Standard trading card ratio: 2.5" × 3.5" = 5:7
+  const w = small ? 65 : 100;
+  const h = Math.round(w * 1.4); // 5:7 ratio
   const statSize = small ? 10 : 13;
   const nameSize = small ? 9 : 11;
+  const pad = small ? 4 : 6;
 
   return (
     <div
@@ -89,7 +93,7 @@ export default function CardTile({ card, owner, selected, onClick, small }: Prop
           color: color,
           textShadow: `0 0 6px ${color}`,
           lineHeight: 1,
-          ...DIR_POSITIONS[dir] as React.CSSProperties,
+          ...dirPositions(pad)[dir] as React.CSSProperties,
         }}>
           {val}
         </span>

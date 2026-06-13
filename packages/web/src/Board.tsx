@@ -16,7 +16,7 @@ export default function Board({ board, onCellClick, currentTurn, highlightCells 
     <div style={{
       display: "grid",
       gridTemplateColumns: `repeat(3, ${cellSize})`,
-      gridTemplateRows: `repeat(3, calc(${cellSize} * 1.18))`,
+      gridTemplateRows: `repeat(3, calc(${cellSize} * 1.4))`,
       gap: "min(1.5vw, 6px)",
       padding: "min(2vw, 10px)",
       background: "rgba(180,0,255,0.06)",
