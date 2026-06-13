@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Board from "./Board";
 import WelcomeScreen from "./WelcomeScreen";
+import CardTile, { P1_COLOR, P2_COLOR } from "./CardTile";
 import { resolveFlips } from "./gameLogic";
 import { Board as BoardType, Card, Player } from "./types";
 
@@ -69,7 +70,9 @@ export default function App() {
 
   const p1Score = board.filter(c => c?.owner === "P1").length;
   const p2Score = board.filter(c => c?.owner === "P2").length;
-  const isOver = board.every(c => c !== null);
+  const totalPlaced = board.filter(c => c !== null).length;
+  // Game ends when P1 has placed 5 and P2 has placed 4 (9 total), or a player reaches 6
+  const isOver = totalPlaced === 9 || p1Score >= 6 || p2Score >= 6;
 
   return (
     <div style={{
@@ -101,41 +104,31 @@ export default function App() {
         {!isOver ? (
           <p style={{
             marginBottom: "1.5rem", letterSpacing: "0.1em",
-            color: turn === "P1" ? "#00e5ff" : "#ff6eb4",
-            textShadow: turn === "P1" ? "0 0 10px #00e5ff" : "0 0 10px #ff6eb4",
+            color: turn === "P1" ? P1_COLOR : P2_COLOR,
+            textShadow: `0 0 10px ${turn === "P1" ? P1_COLOR : P2_COLOR}`,
           }}>
             {turn === "P1" ? "◈ P1" : "◈ P2"} &nbsp;—&nbsp; {selected ? `${selected.name} selected` : "choose a card"}
           </p>
         ) : (
           <p style={{
             marginBottom: "1.5rem", fontSize: "1.3rem", fontWeight: "bold", letterSpacing: "0.15em",
-            color: p1Score > p2Score ? "#00e5ff" : p2Score > p1Score ? "#ff6eb4" : "#aaa",
+            color: p1Score > p2Score ? P1_COLOR : p2Score > p1Score ? P2_COLOR : "#aaa",
             textShadow: "0 0 20px currentColor",
           }}>
-            {p1Score > p2Score ? "P1 WINS" : p2Score > p1Score ? "P2 WINS" : "DRAW"}
+            {p1Score >= 6 ? "P1 WINS — 6 CARDS" : p2Score >= 6 ? "P2 WINS — 6 CARDS" : p1Score > p2Score ? "P1 WINS" : p2Score > p1Score ? "P2 WINS" : "DRAW"}
           </p>
         )}
 
         <div style={{ display: "flex", gap: "2rem", alignItems: "flex-start" }}>
           {/* P1 Hand */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 110 }}>
-            <div style={{ color: "#00e5ff", fontWeight: "bold", textAlign: "center", letterSpacing: "0.2em", textShadow: "0 0 8px #00e5ff" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
+            <div style={{ color: P1_COLOR, fontWeight: "bold", textAlign: "center", letterSpacing: "0.2em", textShadow: `0 0 8px ${P1_COLOR}`, marginBottom: 4 }}>
               P1 &nbsp; {p1Score}
             </div>
             {hands.P1.map(card => (
-              <div key={card.id} onClick={() => turn === "P1" && selectCard(card)} style={{
-                opacity: turn === "P1" ? 1 : 0.35,
-                cursor: turn === "P1" ? "pointer" : "default",
-                border: selected?.id === card.id ? "2px solid #ffd700" : "2px solid #00e5ff44",
-                borderRadius: 4,
-                padding: "5px 10px",
-                background: selected?.id === card.id ? "rgba(255,215,0,0.1)" : "rgba(0,229,255,0.05)",
-                fontSize: 12,
-                letterSpacing: "0.05em",
-                transition: "all 0.15s",
-                boxShadow: selected?.id === card.id ? "0 0 12px rgba(255,215,0,0.5)" : "none",
-              }}>
-                {card.name}{card.isPersonal ? " ★" : ""}
+              <div key={card.id} style={{ opacity: turn === "P1" ? 1 : 0.35, transition: "opacity 0.2s" }}>
+                <CardTile card={card} owner="P1" selected={selected?.id === card.id}
+                  onClick={() => turn === "P1" && selectCard(card)} small />
               </div>
             ))}
           </div>
@@ -143,24 +136,14 @@ export default function App() {
           <Board board={board} onCellClick={placeCard} currentTurn={turn} highlightCells={lastFlips} />
 
           {/* P2 Hand */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 110 }}>
-            <div style={{ color: "#ff6eb4", fontWeight: "bold", textAlign: "center", letterSpacing: "0.2em", textShadow: "0 0 8px #ff6eb4" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
+            <div style={{ color: P2_COLOR, fontWeight: "bold", textAlign: "center", letterSpacing: "0.2em", textShadow: `0 0 8px ${P2_COLOR}`, marginBottom: 4 }}>
               P2 &nbsp; {p2Score}
             </div>
             {hands.P2.map(card => (
-              <div key={card.id} onClick={() => turn === "P2" && selectCard(card)} style={{
-                opacity: turn === "P2" ? 1 : 0.35,
-                cursor: turn === "P2" ? "pointer" : "default",
-                border: selected?.id === card.id ? "2px solid #ffd700" : "2px solid #ff6eb444",
-                borderRadius: 4,
-                padding: "5px 10px",
-                background: selected?.id === card.id ? "rgba(255,215,0,0.1)" : "rgba(255,110,180,0.05)",
-                fontSize: 12,
-                letterSpacing: "0.05em",
-                transition: "all 0.15s",
-                boxShadow: selected?.id === card.id ? "0 0 12px rgba(255,215,0,0.5)" : "none",
-              }}>
-                {card.name}{card.isPersonal ? " ★" : ""}
+              <div key={card.id} style={{ opacity: turn === "P2" ? 1 : 0.35, transition: "opacity 0.2s" }}>
+                <CardTile card={card} owner="P2" selected={selected?.id === card.id}
+                  onClick={() => turn === "P2" && selectCard(card)} small />
               </div>
             ))}
           </div>

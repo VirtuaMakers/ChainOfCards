@@ -1,51 +1,95 @@
 import React from "react";
-import { Card } from "./types";
-import type { Player } from "./types";
+import { Card, Direction, Player } from "./types";
+
+const P1_COLOR = "#00B4A6";
+const P2_COLOR = "#FF6B6B";
+
+export { P1_COLOR, P2_COLOR };
 
 interface Props {
   card: Card;
   owner: Player;
+  selected?: boolean;
+  onClick?: () => void;
+  small?: boolean;
 }
 
-const directionPositions: Record<string, React.CSSProperties> = {
-  N:  { top: 4,  left: "50%", transform: "translateX(-50%)" },
-  S:  { bottom: 4, left: "50%", transform: "translateX(-50%)" },
-  W:  { left: 4, top: "50%", transform: "translateY(-50%)" },
-  E:  { right: 4, top: "50%", transform: "translateY(-50%)" },
-  NW: { top: 4,  left: 4 },
-  NE: { top: 4,  right: 4 },
-  SW: { bottom: 4, left: 4 },
-  SE: { bottom: 4, right: 4 },
+type DirLayout = { top?: string | number; bottom?: string | number; left?: string | number; right?: string | number; transform?: string };
+
+const DIR_POSITIONS: Record<Direction, DirLayout> = {
+  N:  { top: 6,  left: "50%", transform: "translateX(-50%)" },
+  S:  { bottom: 6, left: "50%", transform: "translateX(-50%)" },
+  W:  { left: 6, top: "50%", transform: "translateY(-50%)" },
+  E:  { right: 6, top: "50%", transform: "translateY(-50%)" },
+  NW: { top: 6,  left: 6 },
+  NE: { top: 6,  right: 6 },
+  SW: { bottom: 6, left: 6 },
+  SE: { bottom: 6, right: 6 },
 };
 
-export default function CardTile({ card, owner }: Props) {
-  const bg = owner === "P1" ? "#1a3a5c" : "#5c1a1a";
+export default function CardTile({ card, owner, selected, onClick, small }: Props) {
+  const color = owner === "P1" ? P1_COLOR : P2_COLOR;
+  const w = small ? 72 : 100;
+  const h = small ? 90 : 126;
+  const statSize = small ? 10 : 13;
+  const nameSize = small ? 9 : 11;
 
   return (
-    <div style={{
-      position: "relative",
-      width: 100,
-      height: 120,
-      background: bg,
-      border: "2px solid #ccc",
-      borderRadius: 6,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: "#fff",
-      fontSize: 11,
-      fontWeight: "bold",
-    }}>
-      <span style={{ fontSize: 10, textAlign: "center", padding: "0 4px", zIndex: 1 }}>
+    <div
+      onClick={onClick}
+      style={{
+        position: "relative",
+        width: w,
+        height: h,
+        background: `linear-gradient(145deg, #1a0533 60%, ${color}22)`,
+        border: `2px solid ${selected ? "#ffd700" : color}`,
+        borderRadius: 6,
+        cursor: onClick ? "pointer" : "default",
+        boxShadow: selected
+          ? `0 0 16px #ffd700, 0 0 4px #ffd700`
+          : `0 0 10px ${color}55`,
+        transition: "box-shadow 0.15s, border-color 0.15s",
+        flexShrink: 0,
+      }}
+    >
+      {/* Colored top bar */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0, height: 4,
+        background: color, borderRadius: "4px 4px 0 0",
+        opacity: 0.85,
+      }} />
+
+      {/* Card name */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: nameSize,
+        color: "#ddd",
+        textAlign: "center",
+        padding: "16px 14px 10px",
+        letterSpacing: "0.04em",
+        pointerEvents: "none",
+        lineHeight: 1.3,
+      }}>
         {card.name}
-      </span>
-      {Object.entries(card.values).map(([dir, val]) => (
+        {card.isPersonal && (
+          <span style={{ color: "#ffd700", marginLeft: 3 }}>★</span>
+        )}
+      </div>
+
+      {/* Directional stats */}
+      {(Object.entries(card.values) as [Direction, number][]).map(([dir, val]) => (
         <span key={dir} style={{
           position: "absolute",
-          fontSize: 12,
+          fontSize: statSize,
           fontWeight: "bold",
-          color: "#ffd700",
-          ...directionPositions[dir],
+          color: color,
+          textShadow: `0 0 6px ${color}`,
+          lineHeight: 1,
+          ...DIR_POSITIONS[dir] as React.CSSProperties,
         }}>
           {val}
         </span>
