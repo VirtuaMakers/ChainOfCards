@@ -45,7 +45,7 @@ export default function CardTile({ card, owner, selected, onClick, small }: Prop
         position: "relative",
         width: w,
         height: h,
-        background: `linear-gradient(145deg, #1a0533 60%, ${color}22)`,
+        background: `linear-gradient(145deg, #051e1e 60%, ${color}22)`,
         border: `2px solid ${selected ? "#ffd700" : color}`,
         borderRadius: 6,
         cursor: onClick ? "pointer" : "default",

@@ -19,10 +19,10 @@ export default function Board({ board, onCellClick, currentTurn, highlightCells 
       gridTemplateRows: `repeat(3, calc(${cellSize} * 1.4))`,
       gap: "min(1.5vw, 6px)",
       padding: "min(2vw, 10px)",
-      background: "rgba(180,0,255,0.06)",
+      background: "rgba(0,180,160,0.06)",
       borderRadius: 4,
-      border: "1px solid rgba(180,0,255,0.3)",
-      boxShadow: "0 0 30px rgba(180,0,255,0.15)",
+      border: "1px solid rgba(0,180,160,0.3)",
+      boxShadow: "0 0 30px rgba(0,180,160,0.15)",
     }}>
       {board.map((cell, i) => (
         <div

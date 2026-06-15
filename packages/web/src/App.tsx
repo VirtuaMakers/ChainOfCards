@@ -29,9 +29,9 @@ const btnStyle: React.CSSProperties = {
   fontFamily: "'Courier New', monospace",
   fontSize: "1rem", fontWeight: 700, letterSpacing: "0.3em",
   color: "#0d0221",
-  background: "linear-gradient(90deg, #e040fb, #00e5ff)",
+  background: "linear-gradient(90deg, #00b4a6, #00e5ff)",
   border: "none", borderRadius: 2, cursor: "pointer",
-  boxShadow: "0 0 24px rgba(180,0,255,0.6)",
+  boxShadow: "0 0 24px rgba(0,200,180,0.6)",
 };
 
 export default function App() {
@@ -90,7 +90,7 @@ export default function App() {
   return (
     <div style={{
       minHeight: "100dvh",
-      background: "linear-gradient(160deg, #0d0221 0%, #1a0533 40%, #0a1628 100%)",
+      background: "linear-gradient(160deg, #020f0f 0%, #051e1e 40%, #031428 100%)",
       color: "#fff",
       fontFamily: "'Courier New', monospace",
       display: "flex",
@@ -111,7 +111,7 @@ export default function App() {
         {/* Header */}
         <h1 style={{
           letterSpacing: "0.12em", margin: "0.5rem 0 0",
-          color: "#e0aaff", textShadow: "0 0 20px rgba(180,0,255,0.8)",
+          color: "#e0fffa", textShadow: "0 0 20px rgba(0,200,180,0.8)",
           fontSize: "clamp(1.1rem, 5vw, 1.6rem)", textAlign: "center",
         }}>
           CHAIN OF CARDS ⛓️
