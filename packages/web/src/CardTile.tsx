@@ -43,12 +43,14 @@ export default function CardTile({ card, owner, selected, onClick, small, faceDo
     return (
       <div onClick={onClick} style={{
         width: w, height: h, borderRadius: 6, overflow: "hidden", flexShrink: 0,
-        border: `2px solid ${selected ? "#ffd700" : "#333"}`,
-        boxShadow: "0 0 8px rgba(0,0,0,0.5)",
+        border: `2px solid ${selected ? "#ffd700" : "#ccc"}`,
+        boxShadow: "0 2px 12px rgba(0,0,0,0.4)",
+        background: "#ffffff",
+        display: "flex", alignItems: "center", justifyContent: "center",
         cursor: onClick ? "pointer" : "default",
       }}>
         <img src="/card-back.jpg" alt="Card back"
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          style={{ width: "90%", height: "90%", objectFit: "contain", display: "block" }} />
       </div>
     );
   }
