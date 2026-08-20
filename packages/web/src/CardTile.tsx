@@ -12,6 +12,7 @@ interface Props {
   selected?: boolean;
   onClick?: () => void;
   small?: boolean;
+  faceDown?: boolean;
 }
 
 type DirLayout = { top?: string | number; bottom?: string | number; left?: string | number; right?: string | number; transform?: string };
@@ -29,7 +30,7 @@ function dirPositions(p: number): Record<Direction, DirLayout> {
   };
 }
 
-export default function CardTile({ card, owner, selected, onClick, small }: Props) {
+export default function CardTile({ card, owner, selected, onClick, small, faceDown }: Props) {
   const color = owner === "P1" ? P1_COLOR : P2_COLOR;
   // Standard trading card ratio: 2.5" × 3.5" = 5:7
   const w = small ? 65 : 100;
@@ -37,6 +38,20 @@ export default function CardTile({ card, owner, selected, onClick, small }: Prop
   const statSize = small ? 10 : 13;
   const nameSize = small ? 9 : 11;
   const pad = small ? 4 : 6;
+
+  if (faceDown) {
+    return (
+      <div onClick={onClick} style={{
+        width: w, height: h, borderRadius: 6, overflow: "hidden", flexShrink: 0,
+        border: `2px solid ${selected ? "#ffd700" : "#333"}`,
+        boxShadow: "0 0 8px rgba(0,0,0,0.5)",
+        cursor: onClick ? "pointer" : "default",
+      }}>
+        <img src="/card-back.jpg" alt="Card back"
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+      </div>
+    );
+  }
 
   return (
     <div

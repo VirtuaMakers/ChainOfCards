@@ -142,9 +142,10 @@ export default function App() {
           </div>
           <div style={{ display: "flex", gap: 6, justifyContent: "center", flexWrap: "wrap" }}>
             {hands.P2.map(card => (
-              <div key={card.id} style={{ opacity: turn === "P2" ? 1 : 0.4, transition: "opacity 0.2s" }}>
+              <div key={card.id} style={{ opacity: turn === "P2" ? 1 : 0.7, transition: "opacity 0.2s" }}>
                 <CardTile card={card} owner="P2" selected={selected?.id === card.id}
-                  onClick={() => turn === "P2" && selectCard(card)} small />
+                  onClick={() => turn === "P2" && selectCard(card)} small
+                  faceDown={turn !== "P2"} />
               </div>
             ))}
           </div>
